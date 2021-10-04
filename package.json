@@ -1,0 +1,19 @@
+{
+  "name": "lang-stats-box",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aveek-Saha/lang-stats-box.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aveek-Saha/lang-stats-box/issues"
+  },
+  "homepage": "https://github.com/Aveek-Saha/lang-stats-box#readme"
+}
