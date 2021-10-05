@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Aveek-Saha/lang-stats-box/issues"
   },
-  "homepage": "https://github.com/Aveek-Saha/lang-stats-box#readme"
+  "homepage": "https://github.com/Aveek-Saha/lang-stats-box#readme",
+  "dependencies": {
+    "@octokit/rest": "^18.12.0",
+    "dotenv": "^10.0.0"
+  }
 }
