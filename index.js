@@ -14,9 +14,25 @@ const octokit = new Octokit({
 async function getRepos() {
     var repos = await octokit.repos.listForUser({
         username: githubUsername,
+        type: "owner",
+        per_page: 100,
+        sort: "updated",
+        direction: "desc",
     });
 
-    console.log(repos);
+    repos.data.forEach((repo) => {
+        getRepoLanguage(repo.name);
+    });
+}
+
+async function getRepoLanguage(repo) {
+  var languages = await octokit.repos.listLanguages({
+    owner: githubUsername,
+    repo: repo,
+  });
+
+  console.log(languages);
+
 }
 
 (async () => {
