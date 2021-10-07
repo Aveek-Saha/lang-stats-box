@@ -11,6 +11,17 @@ const octokit = new Octokit({
     auth: `token ${githubToken}`,
 });
 
+async function totalLanguages() {
+    getRepos().then((result) => {
+        // console.log(result);
+        var top5 = Object.entries(result)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 9);
+
+        console.log(top5);
+    });
+}
+
 async function getRepos() {
     var repos = await octokit.repos.listForUser({
         username: githubUsername,
@@ -20,21 +31,35 @@ async function getRepos() {
         direction: "desc",
     });
 
-    repos.data.forEach((repo) => {
-        getRepoLanguage(repo.name);
-    });
+    var langTotal = {};
+
+    return Promise.all(repos.data.map((repo) => getRepoLanguage(repo))).then(
+        (results) => {
+            // console.log(results);
+            // return results;
+            results.forEach((lang) => {
+                let keys = Object.keys(lang);
+
+                keys.map((x) => {
+                    if (langTotal[x]) langTotal[x] += lang[x];
+                    else langTotal[x] = lang[x];
+                });
+            });
+            return langTotal;
+        }
+    );
 }
 
 async function getRepoLanguage(repo) {
-  var languages = await octokit.repos.listLanguages({
-    owner: githubUsername,
-    repo: repo,
-  });
+    if (repo.fork) return {};
+    var languages = await octokit.repos.listLanguages({
+        owner: githubUsername,
+        repo: repo.name,
+    });
 
-  console.log(languages);
-
+    return languages.data;
 }
 
 (async () => {
-    await getRepos();
+    await totalLanguages();
 })();
