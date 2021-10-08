@@ -11,10 +11,11 @@ const octokit = new Octokit({
     auth: `token ${githubToken}`,
 });
 
-async function totalLanguages() {
+async function totalLanguages(exclude=['Jupyter Notebook', 'CSS', 'TeX', 'PHP']) {
     getRepos().then((result) => {
         // console.log(result);
         var top5 = Object.entries(result)
+            .filter(lang => !exclude.includes(lang[0]))
             .sort((a, b) => b[1] - a[1])
             .slice(0, 9);
 
