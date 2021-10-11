@@ -20,7 +20,7 @@ async function totalLanguages(exclude=['Jupyter Notebook', 'CSS', 'TeX', 'PHP'])
             .slice(0, 9);
         
         var totalCode = top5.reduce((a, b) => a.map((v, i) => v + b[i]))[1]
-        var topPercent = top5.map(([a, b]) => [a, b/totalCode])
+        var topPercent = top5.map(([a, b]) => [a, Math.round((b/totalCode)*10000)/100])
 
         console.log(totalCode);
         console.log(topPercent);
