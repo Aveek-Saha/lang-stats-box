@@ -17,13 +17,14 @@ async function totalLanguages(exclude=['Jupyter Notebook', 'CSS', 'TeX', 'PHP'])
         var top5 = Object.entries(result)
             .filter(lang => !exclude.includes(lang[0]))
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 9);
+            .slice(0, 5);
         
         var totalCode = top5.reduce((a, b) => a.map((v, i) => v + b[i]))[1]
         var topPercent = top5.map(([a, b]) => [a, Math.round((b/totalCode)*10000)/100])
 
-        console.log(totalCode);
-        console.log(topPercent);
+        var numBars = topPercent.map(([a, b]) => [a, b, Math.round(b/4)])
+
+        return numBars
     });
 }
 
