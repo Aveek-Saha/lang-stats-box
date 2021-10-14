@@ -26,11 +26,11 @@ async function totalLanguages(exclude=['Jupyter Notebook', 'CSS', 'TeX', 'PHP'])
         var totalCode = top5.reduce((a, b) => a.map((v, i) => v + b[i]))[1]
         var topPercent = top5.map(([a, b]) => [a, Math.round((b/totalCode)*10000)/100])
 
-        var numBars = topPercent.map(([a, b]) => [a, b, Math.round(b/4)])
+        var numBars = topPercent.map(([a, b]) => [a, b, Math.round(b*35/100)])
 
         var lines = [];
         numBars.forEach(lang => {
-            lines.push(` ${truncate(lang[0] + " ", 12).padEnd(12, ' ')} ${ "▓".repeat(lang[2])}${ "░".repeat(25 - lang[2])} ${lang[1] + "%"}`)
+            lines.push(` ${truncate(lang[0] + " ", 12).padStart(12, ' ')} ${ "█".repeat(lang[2]) + "░".repeat(35 - lang[2])} ${lang[1] + "%"}`)
         })
 
         updateGist(lines.join("\n"))
@@ -50,7 +50,7 @@ async function updateGist(lines) {
     try {
       await octokit.gists.update({
         gist_id: gistId,
-        description: `👨‍💻 Programming Stats`,
+        description: `💻 Programming Language Stats`,
         files: {
           [filename]: {
               content: lines
