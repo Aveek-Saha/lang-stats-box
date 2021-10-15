@@ -5,62 +5,74 @@ const {
     GIST_ID: gistId,
     GH_TOKEN: githubToken,
     GH_USERNAME: githubUsername,
+    EXCLUDE: exclude,
 } = process.env;
 
 const octokit = new Octokit({
     auth: `token ${githubToken}`,
 });
 
-function truncate(str, n){
-    return (str.length > n) ? str.substr(0, n-1) + '…' : str;
-};
+function truncate(str, n) {
+    return str.length > n ? str.substr(0, n - 1) + "…" : str;
+}
 
-async function totalLanguages(exclude=['Jupyter Notebook', 'CSS', 'TeX', 'PHP']) {
+async function totalLanguages() {
     getRepos().then((result) => {
-        // console.log(result);
+        var exc = exclude.split(",");
         var top5 = Object.entries(result)
-            .filter(lang => !exclude.includes(lang[0]))
+            .filter((lang) => !exc.includes(lang[0]))
             .sort((a, b) => b[1] - a[1])
             .slice(0, 5);
-        
-        var totalCode = top5.reduce((a, b) => a.map((v, i) => v + b[i]))[1]
-        var topPercent = top5.map(([a, b]) => [a, Math.round((b/totalCode)*10000)/100])
 
-        var numBars = topPercent.map(([a, b]) => [a, b, Math.round(b*35/100)])
+        var totalCode = top5.reduce((a, b) => a.map((v, i) => v + b[i]))[1];
+        var topPercent = top5.map(([a, b]) => [
+            a,
+            Math.round((b / totalCode) * 10000) / 100,
+        ]);
+
+        var numBars = topPercent.map(([a, b]) => [
+            a,
+            b,
+            Math.round((b * 35) / 100),
+        ]);
 
         var lines = [];
-        numBars.forEach(lang => {
-            lines.push(` ${truncate(lang[0] + " ", 12).padStart(12, ' ')} ${ "█".repeat(lang[2]) + "░".repeat(35 - lang[2])} ${lang[1] + "%"}`)
-        })
+        numBars.forEach((lang) => {
+            lines.push(
+                ` ${truncate(lang[0] + " ", 12).padStart(12, " ")} ${
+                    "█".repeat(lang[2]) + "░".repeat(35 - lang[2])
+                } ${lang[1] + "%"}`
+            );
+        });
 
-        updateGist(lines.join("\n"))
+        updateGist(lines.join("\n"));
     });
 }
 
 async function updateGist(lines) {
     let gist;
     try {
-      gist = await octokit.gists.get({ gist_id: gistId });
+        gist = await octokit.gists.get({ gist_id: gistId });
     } catch (error) {
-      console.error(`Unable to get gist\n${error}`);
+        console.error(`Unable to get gist\n${error}`);
     }
 
     const filename = Object.keys(gist.data.files)[0];
-  
+
     try {
-      await octokit.gists.update({
-        gist_id: gistId,
-        description: `💻 Programming Language Stats`,
-        files: {
-          [filename]: {
-              content: lines
-          }
-        }
-      });
+        await octokit.gists.update({
+            gist_id: gistId,
+            description: `💻 Programming Language Stats`,
+            files: {
+                [filename]: {
+                    content: lines,
+                },
+            },
+        });
     } catch (error) {
-      console.error(`Unable to update gist\n${error}`);
+        console.error(`Unable to update gist\n${error}`);
     }
-  }
+}
 
 async function getRepos() {
     var repos = await octokit.repos.listForUser({
