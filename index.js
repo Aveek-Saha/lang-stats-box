@@ -21,8 +21,7 @@ async function totalLanguages() {
         var exc = exclude.split(",");
         var top5 = Object.entries(result)
             .filter((lang) => !exc.includes(lang[0]))
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 5);
+            .sort((a, b) => b[1] - a[1]);
 
         var totalCode = top5.reduce((a, b) => a.map((v, i) => v + b[i]))[1];
         var topPercent = top5.map(([a, b]) => [
@@ -33,14 +32,14 @@ async function totalLanguages() {
         var numBars = topPercent.map(([a, b]) => [
             a,
             b,
-            Math.round((b * 35) / 100),
+            Math.round((b * 36) / 100),
         ]);
 
         var lines = [];
         numBars.forEach((lang) => {
             lines.push(
-                ` ${truncate(lang[0] + " ", 12).padStart(12, " ")} ${
-                    "█".repeat(lang[2]) + "░".repeat(35 - lang[2])
+                `${truncate(lang[0] + " ", 12).padStart(12)}${
+                    "█".repeat(lang[2]) + "░".repeat(36 - lang[2])
                 } ${lang[1] + "%"}`
             );
         });
