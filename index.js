@@ -32,7 +32,7 @@ async function totalLanguages() {
         var numBars = topPercent.map(([a, b]) => [
             a,
             b,
-            Math.round((b * 36) / 100),
+            Math.ceil((b * 36) / 100),
         ]);
 
         var lines = [];
@@ -40,7 +40,7 @@ async function totalLanguages() {
             lines.push(
                 `${truncate(lang[0] + " ", 12).padStart(12)}${
                     "█".repeat(lang[2]) + "░".repeat(36 - lang[2])
-                } ${lang[1] + "%"}`
+                } ${(lang[1].toFixed(2) + "%").padStart(6)}`
             );
         });
 
