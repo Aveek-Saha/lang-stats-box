@@ -1,0 +1,18 @@
+name: Update gist with most used programming languages
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  spotify-box:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - name: Update
+        uses: ./
+        env:
+          GIST_ID: ${{ secrets.GIST_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
+          EXCLUDE: ${{ secrets.EXCLUDE }}

@@ -1,0 +1,11 @@
+name: lang-stats-box
+author: Aveek Saha
+description: GitHub Action for injecting your top programming languages into a gist
+
+runs:
+  using: node12
+  main: ./index.js
+
+branding:
+  icon: terminal
+  color: gray-dark
