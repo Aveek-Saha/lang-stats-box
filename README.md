@@ -23,7 +23,7 @@
    - **GH_TOKEN:** The GitHub access token generated above.
    - **GIST_ID:** The ID portion from your gist url: `https://gist.github.com/Aveek-Saha/`**`8335e85451541072dd25fda601129f7d`**.
    - **GH_USERNAME:** Your `GitHub` account username.
-   - **EXCLUDE:** A comma separated list of languages you want to exclude from the gist. Eg: *Jupyter Notebook,CSS,TeX,PHP*
+   - **EXCLUDE:** A comma separated list of languages you want to exclude from the gist. <br> Eg: *Jupyter Notebook,CSS,TeX,PHP*
 
 ## Credits
 This code was inspired by [@matchai's bird-box](https://github.com/matchai/bird-box).
